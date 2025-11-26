@@ -90,7 +90,7 @@ sys.path.insert(0, str(tsad_eval_dir))
 # Change to TSAD_eval-main directory
 os.chdir(str(tsad_eval_dir))
 
-from exp_better import MetricRobustnessExperiment, ExperimentConfig
+from exp import MetricRobustnessExperiment, ExperimentConfig
 
 def main():
     # Configuration
