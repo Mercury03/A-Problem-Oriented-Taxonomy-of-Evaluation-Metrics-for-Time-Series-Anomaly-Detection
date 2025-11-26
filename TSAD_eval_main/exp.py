@@ -232,11 +232,11 @@ class ExperimentConfig:
         
         # Multiple experiment configuration validation
         if self.n_experiment_runs > 1:
-            print(f"  ⚠️  Multiple experiment mode: will run {self.n_experiment_runs} independent experiments")
+            print(f" Multiple experiment mode: will run {self.n_experiment_runs} independent experiments")
             if self.parallel_model_training and len(self.gpu_devices) > 1:
                 print(f"  ✓ Parallel model training enabled, using GPUs: {self.gpu_devices}")
             elif self.n_experiment_runs > 3:
-                print(f"  ⚠️  Warning: running {self.n_experiment_runs} experiments may take a long time")
+                print(f" Warning: running {self.n_experiment_runs} experiments may take a long time")
     
     def get_performance_mode(self) -> str:
         """Get performance mode"""
@@ -1163,7 +1163,6 @@ class MetricRobustnessExperiment:
                 score = self.metric_registry.compute_metric(metric_name, gt_labels, pred_labels, pred_scores)
                 if not np.isnan(score):
                     random_scores.append(score)
-            print(f"      Using cached {len(random_scores)} random prediction scores")
             return random_scores
         
         true_anomaly_rate = np.mean(gt_labels)
@@ -1220,7 +1219,6 @@ class MetricRobustnessExperiment:
             if not np.isnan(score):
                 random_scores.append(score)
         
-        print(f"      Generated {len(random_scores)} valid random prediction scores (uniform:{n_uniform}, cluster:{n_cluster}, pure random:{n_pure})")
         return random_scores
     
     def _generate_quality_gradient_predictions(self, metric_name: str, gt_labels: np.ndarray) -> List[float]:
@@ -1235,7 +1233,6 @@ class MetricRobustnessExperiment:
         
         if cache_key in self._quality_gradient_cache:
             cached_scores = self._quality_gradient_cache[cache_key]
-            print(f"      Using cached {len(cached_scores)} quality gradient scores")
             return cached_scores
         
         quality_scores = []
@@ -1243,7 +1240,6 @@ class MetricRobustnessExperiment:
         # Reduce quality levels to improve speed (from 19 to 10)
         quality_levels = np.linspace(0.9, 0.1, 10)  # From high quality to low quality
         
-        print(f"      Quickly generate quality gradient (optimized version)...")
         
         # Pre-calculate some common values
         gt_mean = np.mean(gt_labels)
@@ -1309,7 +1305,6 @@ class MetricRobustnessExperiment:
         # Cache result
         self._quality_gradient_cache[cache_key] = quality_scores
         
-        print(f"      Generated {len(quality_scores)} quality gradient scores")
         return quality_scores
     
     def run_experiment(self) -> Dict[str, Any]:
@@ -1318,7 +1313,7 @@ class MetricRobustnessExperiment:
         print(f"Configuration: {self.config.n_datasets} datasets, {self.config.n_random_trials} random trials")
         
         if self.config.n_experiment_runs > 1:
-            print(f"⚙️  Multiple experiment mode: will run {self.config.n_experiment_runs} independent experiments")
+            print(f"Multiple experiment mode: will run {self.config.n_experiment_runs} independent experiments")
             print(f"   Aggregation method: {self.config.aggregate_runs}")
             if self.config.parallel_model_training:
                 print(f"   Parallel training: using GPUs {self.config.gpu_devices}")
@@ -1332,10 +1327,10 @@ class MetricRobustnessExperiment:
             
             if self.config.n_experiment_runs > 1:
                 print(f"\n{'='*60}")
-                print(f"运行实验 #{run_id + 1}/{self.config.n_experiment_runs} (seed={run_seed})")
+                print(f"Running experiment #{run_id + 1}/{self.config.n_experiment_runs} (seed={run_seed})")
                 print(f"{'='*60}")
             
-            # 运行单次实验
+            # Run single experiment
             run_result = self._run_single_experiment(run_seed)
             all_run_results.append({
                 'run_id': run_id,
@@ -1468,12 +1463,12 @@ class MetricRobustnessExperiment:
                     for model_name, (pred_labels, pred_scores) in results_dict.items():
                         genuine_predictions_base.append((model_name, pred_labels, pred_scores))
                     
-                    print(f"    ✓ 并行训练完成，{len(genuine_predictions_base)}个模型")
+                    print(f"    Parallel training completed, {len(genuine_predictions_base)} models")
                     
                 except Exception as e:
-                    print(f"    ✗ 并行训练失败: {e}")
-                    print(f"    回退到串行训练...")
-                    # 回退到串行训练
+                    print(f"    Parallel training failed: {e}")
+                    print(f"    Falling back to serial training...")
+                    # Fall back to serial training
                     for model_name, model_detector in self.real_models.items():
                         try:
                             pred_labels, pred_scores = model_detector.train_and_predict(
@@ -1539,7 +1534,7 @@ class MetricRobustnessExperiment:
                         dataset_results[metric_name] = result
                         completed_work += 1
                         progress = (completed_work / total_work) * 100
-                        print(f"    ✓ {metric_name} - 总进度: {progress:.1f}%")
+                        print(f"    ✓ {metric_name} - Overall Progress: {progress:.1f}%")
                         
                 except Exception as e:
                     print(f"    并行处理失败，回退到串行处理: {str(e)}")
@@ -1841,7 +1836,7 @@ class MetricRobustnessExperiment:
         
         # 如果没有真实分数，记录警告（不再使用完美预测作为fallback）
         if len(genuine_scores) == 0:
-            print(f"    ⚠ Warning: Metric '{metric_name}' all real models failed, cannot calculate genuine_scores")
+            print(f"  Warning: Metric '{metric_name}' all real models failed, cannot calculate genuine_scores")
             # Use a medium score as placeholder to avoid calculation failure
             genuine_scores = [0.5]  # 使用中等分数而不是完美预测
         
@@ -2092,10 +2087,10 @@ class MetricRobustnessExperiment:
         
         # 如果没有任何真实模型可用，记录警告（不再使用完美预测）
         if len(genuine_scores) == 0:
-            print(f"    ⚠ 警告: 所有真实模型都失败，使用中等分数作为占位符")
+            print(f"Warning: All real models fail, use medium scores as placeholders")
             genuine_scores = [0.5]  # 使用中等分数而不是完美预测
         
-        print(f"    统计分析...")
+        print(f"  Statistical Analysis  ...")
         # 统计分析
         if len(random_scores) > 0 and len(genuine_scores) > 0:
             # Mann-Whitney U检验
@@ -3425,10 +3420,10 @@ Examples:
                 pass_rate = perf['pass_rate']
                 print(f"  {metric_name}: {pass_rate:.1%} Pass Rate")
         
-        print(f"\nDetailed reports and charts saved to: {config.output_dir}/reports/")
+        print(f"\n Detailed reports and charts saved to: {config.output_dir}/reports/")
         
     except Exception as e:
-        print(f"\n✗ Experiment failed: {str(e)}")
+        print(f"\n Experiment failed: {str(e)}")
         import traceback
         traceback.print_exc()
         return False
@@ -3439,7 +3434,7 @@ Examples:
 if __name__ == "__main__":
     success = main()
     if success:
-        print("\n🎉 Experiment completed successfully!")
+        print("\n Experiment completed successfully!")
     else:
-        print("\n❌ Experiment failed")
+        print("\n Experiment failed")
         sys.exit(1)
