@@ -1,4 +1,4 @@
-# TSAD-MetricX: A Problem-Oriented Evaluation Framework for Time Series Anomaly Detection
+# A Problem-Oriented Evaluation Framework for Time Series Anomaly Detection
 
 This repository provides the official implementation for the experiments in the paper:
 
