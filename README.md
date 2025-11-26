@@ -22,12 +22,7 @@ This repository also contains the **full experimental pipeline** used in the pap
 - Synthetic dataset generation (5 anomaly types)
 - Controlled anomaly contamination (5%–20%)
 - Quality-gradient degradation (from genuine to random predictions)
-- Metrics benchmarking:
-  - Classical metrics
-  - Event-based metrics
-  - Tolerance-aware metrics
-  - Cost-aware metrics
-  - Robustness-oriented metrics
+
 
 The experiments are designed **not to test detector performance**, but rather to **evaluate the discriminative ability and robustness of evaluation metrics** themselves.
 
