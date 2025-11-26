@@ -11,9 +11,8 @@ It extends an existing open-source evaluation library for time series anomaly de
 
 ## 🔧 Extension to TSAD\_eval Repository
 
-This project introduces **a newly designed evaluation metric** and has been **integrated as an extension** to the open-source TSAD evaluation library:🔗 https://github.com/sondsorb/TSAD_eval
+Specifically:A new metric(PATE) has been added to expand the existing collection of TSAD evaluation methods.🔗 https://github.com/sondsorb/TSAD_eval
 
-Specifically:A new metric has been added to expand the existing collection of TSAD evaluation methods.
 ---
 
 ## 📎 Included Experimental Code
