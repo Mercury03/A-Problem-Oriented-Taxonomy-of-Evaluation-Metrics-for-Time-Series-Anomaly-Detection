@@ -1,0 +1,25 @@
+实验时间: 20251023_183235
+数据集数量: 12
+评估指标数量: 20
+
+指标列表:
+  1. delay_threshold_adjust_2
+  2. auc_pr
+  3. delay_threshold_adjust_5
+  4. etaf_default
+  5. best_threshold_f1
+  6. temporal_distance
+  7. range_pr_front
+  8. patk
+  9. taf_default
+  10. point_adjust
+  11. range_pr_flat
+  12. point_adjust_k20
+  13. roc_auc
+  14. time_tolerant_5
+  15. latency_sparsity_aware_2
+  16. auc_roc
+  17. nab_score
+  18. pointwise_f1
+  19. pate_f1_default
+  20. pointwise_f1_complex
